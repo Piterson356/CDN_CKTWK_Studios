@@ -1,24 +1,116 @@
 <!DOCTYPE html>
-<html>
-<head> <meta name="robots" content="noindex, nofollow">
-    <title>Loading...</title>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Ładowanie serwera...</title>
     <style>
-        body { background: #222; color: white; font-family: Arial; text-align: center; margin-top: 20%; }
-        #mapimg { width: 300px; border: 2px solid #555; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Segoe UI', sans-serif; }
+        
+        /* Kontener na animowane tła */
+        #bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+
+        .bg-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 2s ease-in-out;
+            transform: scale(1.1); /* Startowe przybliżenie */
+        }
+
+        /* Animacja powolnego przybliżania (Ken Burns) */
+        @keyframes kenburns {
+            0% { transform: scale(1.1); }
+            100% { transform: scale(1.3); }
+        }
+
+        .active { opacity: 1; animation: kenburns 15s linear forwards; }
+
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.55); z-index: 2; }
+
+        .container {
+            position: relative; z-index: 3; display: flex; align-items: center; justify-content: center; height: 100%;
+        }
+
+        .box {
+            background: rgba(0, 0, 0, 0.8); padding: 40px; border-radius: 15px;
+            border: 1px solid rgba(0, 170, 255, 0.3); width: 400px; text-align: center;
+            box-shadow: 0 0 30px rgba(0,0,0,1);
+        }
+
+        h1 { color: #00aaff; margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 4px; }
+        .map-info { color: #999; margin: 5px 0 25px 0; font-size: 14px; }
+        
+        .loader-bar { background: #222; height: 6px; border-radius: 3px; overflow: hidden; }
+        .loader-fill { background: linear-gradient(90deg, #00aaff, #00ffcc); height: 100%; width: 0%; transition: width 0.4s; }
+        #status { font-size: 11px; color: #555; margin-top: 8px; text-transform: uppercase; font-weight: bold; }
     </style>
 </head>
 <body>
-    <h1 id="servername">Łączenie...</h1>
-    <img id="mapimg" src="asset://mapimage/invalid_map" />
-    <p>Mapa: <span id="mapname">???</span></p>
 
-    <script type="text/javascript">
-        // Ta funkcja jest automatycznie wywoływana przez Garry's Mod
-        function GameDetails( servername, serverurl, mapname, maxplayers, steamid, gamemode ) {
+    <div id="bg-container">
+        <div id="bg1" class="bg-layer"></div>
+        <div id="bg2" class="bg-layer"></div>
+    </div>
+    <div class="overlay"></div>
+
+    <div class="container">
+        <div class="box">
+            <h1 id="servername">ŁĄCZENIE...</h1>
+            <p class="map-info">MAPA: <span id="mapname">WCZYTYWANIE...</span></p>
+            
+            <div class="loader-bar"><div id="fill" class="loader-fill"></div></div>
+            <div id="status">INICJALIZACJA...</div>
+        </div>
+    </div>
+
+    <audio id="loading-music" loop><source src="muzyka.mp3" type="audio/mpeg"></audio>
+
+    <script>
+        // --- TWOJE ZDJĘCIA ---
+        // Tutaj wpisz nazwy plików, które wgrałeś na GitHub:
+        const images = ["zdjecie1.jpg", "zdjecie2.jpg", "zdjecie3.jpg"];
+        
+        let currentIndex = 0;
+        let activeLayer = 1;
+
+        function changeImage() {
+            const nextLayer = activeLayer === 1 ? 2 : 1;
+            const currentEl = document.getElementById(`bg${activeLayer}`);
+            const nextEl = document.getElementById(`bg${nextLayer}`);
+
+            nextEl.style.backgroundImage = `url('${images[currentIndex]}')`;
+            
+            // Reset animacji dla nowej warstwy
+            nextEl.classList.remove('active');
+            void nextEl.offsetWidth; // "Magiczna" linia wymuszająca restart animacji
+            
+            nextEl.classList.add('active');
+            currentEl.classList.remove('active');
+
+            activeLayer = nextLayer;
+            currentIndex = (currentIndex + 1) % images.length;
+        }
+
+        // Zmiana co 8 sekund dla lepszego efektu
+        setInterval(changeImage, 8000);
+        changeImage();
+
+        // --- KOMUNIKACJA Z GMODEM ---
+        function GameDetails(servername, serverurl, mapname) {
             document.getElementById("servername").innerText = servername;
             document.getElementById("mapname").innerText = mapname;
-            document.getElementById("mapimg").src = "asset://mapimage/" + mapname;
+            var music = document.getElementById("loading-music");
+            music.volume = 0.2;
+            music.play().catch(() => {});
         }
+
+        function SetFilesNeeded(needed) { totalFiles = needed > 0 ? needed : 100; }
+        function SetFilesRemaining(remaining) {
+            let progress = Math.min(100, Math.max(0, ((totalFiles - remaining) / totalFiles) * 100));
+            document.getElementById("fill").style.width = progress + "%";
+        }
+        function SetStatusChanged(status) { document.getElementById("status").innerText = status; if(document.getElementById("loading-music").paused) document.getElementById("loading-music").play(); }
+        var totalFiles = 100;
     </script>
 </body>
 </html>
