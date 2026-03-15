@@ -3,111 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
-    <title>Ładowanie serwera...</title>
+    <title>Ładowanie...</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Segoe UI', sans-serif; color: white; }
+        /* --- STYLIZACJA TŁA --- */
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; background: #000; 
+            font-family: 'Segoe UI', sans-serif; color: white; 
+        }
         
-        #bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-        
-        .bg-layer { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+        #bg { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background-size: cover; background-position: center; 
-            opacity: 0; 
-            transition: opacity 3s ease-in-out; /* Bardzo długie i płynne przenikanie */
+            z-index: 1;
+            transition: background-image 2.5s ease-in-out;
+            animation: kenburns 40s linear infinite;
         }
 
-        /* Animacja Ken Burns - teraz trwa 40 sekund i nie resetuje się gwałtownie */
         @keyframes kenburns {
             0% { transform: scale(1.0); }
-            100% { transform: scale(1.3); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1.0); }
         }
 
-        .active { 
-            opacity: 1; 
-            animation: kenburns 40s linear forwards; 
+        .overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.6); z-index: 2; 
+        }
+        
+        /* --- UKŁAD PANELI --- */
+        .main-layout { 
+            position: relative; z-index: 3; 
+            display: flex; align-items: center; justify-content: space-around; 
+            height: 100vh; padding: 0 50px; 
         }
 
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 2; }
-        .main-layout { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-around; height: 100vh; padding: 0 50px; }
-        .side-panel { background: rgba(0, 0, 0, 0.85); padding: 30px; border-radius: 20px; border: 1px solid rgba(0, 170, 255, 0.2); width: 280px; min-height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #avatar { width: 110px; height: 110px; border-radius: 50%; border: 4px solid #00aaff; margin-bottom: 15px; box-shadow: 0 0 25px rgba(0,170,255,0.6); background: #222; }
-        #player-name { font-size: 1.5rem; color: #00aaff; font-weight: bold; text-align: center; }
+        .side-panel { 
+            background: rgba(0, 0, 0, 0.85); padding: 30px; border-radius: 20px; 
+            border: 1px solid rgba(0, 170, 255, 0.2); width: 280px; min-height: 250px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        }
+
+        /* --- ŚRODEK (LOGO I PASEK) --- */
         .center-panel { text-align: center; width: 400px; }
-        .server-logo { width: 280px; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(0,170,255,0.5)); }
+        .server-logo { width: 280px; margin-bottom: 15px; }
         h1 { color: #00aaff; margin: 10px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; }
-        .info-text { color: #aaa; font-size: 13px; margin: 5px 0; font-weight: 300; text-transform: uppercase; }
+        .info-text { color: #aaa; font-size: 13px; margin: 5px 0; text-transform: uppercase; }
+        
         .loader-bar { background: #1a1a1a; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 20px; }
         .loader-fill { background: linear-gradient(90deg, #00aaff, #00ffcc); height: 100%; width: 0%; transition: width 0.4s; }
-        .rules-box h2 { color: #00ffcc; font-size: 1.1rem; text-transform: uppercase; border-bottom: 1px solid #333; width: 100%; padding-bottom: 8px; text-align: center; margin-top: 0; }
-        .rules-box ul { padding-left: 18px; color: #ddd; font-size: 0.85rem; line-height: 1.8; margin-top: 15px; list-style-type: '➜ '; }
+
+        /* --- AWATAR --- */
+        #avatar { 
+            width: 110px; height: 110px; border-radius: 50%; 
+            border: 4px solid #00aaff; margin-bottom: 15px; 
+            box-shadow: 0 0 25px rgba(0,170,255,0.6); background: #222; 
+        }
+        #player-name { font-size: 1.5rem; color: #00aaff; font-weight: bold; text-align: center; }
+
+        /* --- STYL REGULAMINU --- */
+        .rules-title { 
+            color: #00ffcc; font-size: 1.1rem; text-transform: uppercase; 
+            border-bottom: 1px solid #333; width: 100%; 
+            padding-bottom: 8px; text-align: center; margin-bottom: 15px;
+        }
+        .rules-list { 
+            padding-left: 10px; color: #ddd; font-size: 0.85rem; 
+            line-height: 1.8; list-style-type: none; 
+        }
     </style>
 </head>
 <body>
-    <div id="bg-container"><div id="bg1" class="bg-layer"></div><div id="bg2" class="bg-layer"></div></div>
+
+    <div id="bg"></div>
     <div class="overlay"></div>
+
     <div class="main-layout">
+        
+        <!-- LEWA STRONA: PROFIL GRACZA -->
         <div class="side-panel">
             <img id="avatar" src="" style="display:none;">
             <div style="font-size: 1.1rem; color: #fff; margin-bottom: 5px;">Witaj,</div>
             <div id="player-name">Graczu</div>
             <div id="player-steamid" style="font-size: 10px; color: #555; margin-top: 10px;">ID: Oczekiwanie...</div>
         </div>
+
+        <!-- ŚRODEK: LOGO I STATUS ŁADOWANIA -->
         <div class="center-panel">
             <img src="cdnlogos.png" class="server-logo" onerror="this.style.display='none'">
             <h1 id="servername">ŁĄCZENIE...</h1>
             <div class="info-text">TRYB: <span id="gamemode" style="color:white;">WCZYTYWANIE...</span></div>
             <div class="info-text">MAPA: <span id="mapname" style="color:white;">WCZYTYWANIE...</span></div>
+            
             <div class="loader-bar"><div id="fill" class="loader-fill"></div></div>
-            <div id="status" style="font-size:10px; color:#444; margin-top:10px; font-weight:bold; text-transform: uppercase;">INICJALIZACJA...</div>
+            <div id="status" style="font-size:10px; color:#444; margin-top:10px; font-weight:bold;">INICJALIZACJA...</div>
         </div>
-        <div class="side-panel rules-box">
-            <h2>Regulamin</h2>
-            <ul>
-                <li>Zakaz używania cheatów.</li>
-                <li>Mikrofon od 16 lat (lub mutacja).</li>
-                <li>Szanuj innych graczy i adminów.</li>
-                <li>Zakaz RDM / MassRDM.</li>
-                <li>Baw się dobrze!</li>
-            </ul>
+
+        <!-- PRAWA STRONA: REGULAMIN (TUTAJ EDYTUJ TEKST) -->
+        <div class="side-panel">
+            <div class="rules-title">Regulamin</div>
+            <div class="rules-list">
+                <div>➜ Zakaz cheatowania.</div>
+                <div>➜ Mikrofon od 16 lat.</div>
+                <div>➜ Szanuj innych graczy.</div>
+                <div>➜ Zakaz RDM / VDM.</div>
+                <div>➜ Słuchaj administracji.</div>
+                <div>➜ Miłej gry!</div>
+            </div>
         </div>
+
     </div>
+
     <audio id="loading-music" loop><source src="cdnloading.ogg" type="audio/ogg"></audio>
+
     <script>
+        // --- KONFIGURACJA ZDJĘĆ ---
         const images = ["cdn1.jpg", "cdn2.jpg", "cdn3.jpg", "cdn4.jpg", "cdn5.jpg", "cdn6.jpg"];
-        let currentIndex = 0; let activeLayer = 1;
+        let currentIndex = 0;
 
         function changeImage() {
-            const nextLayer = activeLayer === 1 ? 2 : 1;
-            const currentEl = document.getElementById(`bg${activeLayer}`);
-            const nextEl = document.getElementById(`bg${nextLayer}`);
-            
-            // 1. Przygotuj nową warstwę pod spodem (jeszcze niewidoczną)
-            nextEl.style.backgroundImage = `url('${images[currentIndex]}')`;
-            nextEl.classList.remove('active');
-            
-            // Wymuś restart animacji dla nowej warstwy
-            void nextEl.offsetWidth; 
-            
-            // 2. Aktywuj nową warstwę (zacznie się pojawiać i przybliżać)
-            nextEl.classList.add('active');
-            
-            // 3. Starą warstwę wygaś powoli (ale NIE usuwaj klasy active gwałtownie)
-            currentEl.style.opacity = "0";
-            
-            // Usuwamy klasę active dopiero po zakończeniu transition (3 sekundy)
-            setTimeout(() => {
-                if (currentEl.style.opacity === "0") {
-                    currentEl.classList.remove('active');
-                }
-            }, 3000);
-
-            activeLayer = nextLayer;
+            const bg = document.getElementById('bg');
+            bg.style.backgroundImage = "url('" + images[currentIndex] + "')";
             currentIndex = (currentIndex + 1) % images.length;
         }
 
-        setInterval(changeImage, 8000);
+        setInterval(changeImage, 7000);
         changeImage();
 
+        // --- KOMUNIKACJA Z SERWEREM ---
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
             document.getElementById("servername").innerText = servername;
             document.getElementById("mapname").innerText = mapname;
