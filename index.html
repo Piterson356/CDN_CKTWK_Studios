@@ -7,44 +7,51 @@
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Segoe UI', sans-serif; color: white; }
         
-        /* --- STYLIZACJA TŁA --- */
+        /* --- TŁO (SAMO PRZENIKANIE) --- */
         #bg { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background-size: cover; background-position: center; 
             z-index: 1;
-            transition: background-image 2.5s ease-in-out;
-            animation: kenburns 40s linear infinite;
-        }
-
-        @keyframes kenburns {
-            0% { transform: scale(1.0); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1.0); }
+            transition: background-image 2s ease-in-out; /* Płynny fade */
         }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 2; }
         
-        /* --- UKŁAD PANELI --- */
+        /* --- UKŁAD --- */
         .main-layout { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-around; height: 100vh; padding: 0 50px; }
         .side-panel { background: rgba(0, 0, 0, 0.85); padding: 30px; border-radius: 20px; border: 1px solid rgba(0, 170, 255, 0.2); width: 280px; min-height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        
+        /* --- LOGO Z POŚWIATĄ --- */
         .center-panel { text-align: center; width: 400px; }
-        .server-logo { width: 280px; margin-bottom: 15px; }
+        .server-logo { 
+            width: 280px; margin-bottom: 15px; 
+            filter: drop-shadow(0 0 20px rgba(0, 170, 255, 0.8)); /* Mocniejszy Glow */
+        }
+
         h1 { color: #00aaff; margin: 10px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; }
         .info-text { color: #aaa; font-size: 13px; margin: 5px 0; text-transform: uppercase; }
         .loader-bar { background: #1a1a1a; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 20px; }
         .loader-fill { background: linear-gradient(90deg, #00aaff, #00ffcc); height: 100%; width: 0%; transition: width 0.4s; }
+
+        /* --- PROFIL I ZEGAR --- */
         #avatar { width: 110px; height: 110px; border-radius: 50%; border: 4px solid #00aaff; margin-bottom: 15px; box-shadow: 0 0 25px rgba(0,170,255,0.6); background: #222; }
         #player-name { font-size: 1.5rem; color: #00aaff; font-weight: bold; text-align: center; }
-        .rules-title { color: #00ffcc; font-size: 1.1rem; text-transform: uppercase; border-bottom: 1px solid #333; width: 100%; padding-bottom: 8px; text-align: center; margin-bottom: 15px; }
-        .rules-list { padding-left: 10px; color: #ddd; font-size: 0.85rem; line-height: 1.8; list-style-type: none; }
+        
+        #clock { 
+            position: fixed; bottom: 20px; right: 30px; 
+            font-size: 1.5rem; color: rgba(255,255,255,0.5); 
+            font-family: monospace; z-index: 4; 
+        }
     </style>
 </head>
 <body>
 
     <div id="bg"></div>
     <div class="overlay"></div>
+    <div id="clock">00:00:00</div>
 
     <div class="main-layout">
+        <!-- LEWA: GRACZ -->
         <div class="side-panel">
             <img id="avatar" src="" style="display:none;">
             <div style="font-size: 1.1rem; color: #fff; margin-bottom: 5px;">Witaj,</div>
@@ -52,6 +59,7 @@
             <div id="player-steamid" style="font-size: 10px; color: #555; margin-top: 10px;">ID: Oczekiwanie...</div>
         </div>
 
+        <!-- ŚRODEK: LOGO I STATUS -->
         <div class="center-panel">
             <img src="cdnlogos.png" class="server-logo" onerror="this.style.display='none'">
             <h1 id="servername">ŁĄCZENIE...</h1>
@@ -61,15 +69,16 @@
             <div id="status" style="font-size:10px; color:#444; margin-top:10px; font-weight:bold;">INICJALIZACJA...</div>
         </div>
 
+        <!-- PRAWA: REGULAMIN -->
         <div class="side-panel">
-            <div class="rules-title">Regulamin</div>
-            <div class="rules-list">
-                <div>➜ Zakaz cheatowania.</div>
-                <div>➜ Mikrofon od 13 lat.</div>
-                <div>➜ Szanuj innych graczy.</div>
-                <div>➜ Zakaz RDM / VDM.</div>
-                <div>➜ Słuchaj administracji.</div>
-                <div>➜ Miłej gry!</div>
+            <div style="color: #00ffcc; text-transform: uppercase; border-bottom: 1px solid #333; width: 100%; text-align: center; padding-bottom: 8px; margin-bottom: 15px;">Regulamin</div>
+            <div style="color: #ddd; font-size: 0.85rem; line-height: 1.8;">
+                ➜ Zakaz cheatowania.<br>
+                ➜ Mikrofon od 16 lat.<br>
+                ➜ Szanuj innych graczy.<br>
+                ➜ Zakaz RDM / VDM.<br>
+                ➜ Słuchaj administracji.<br>
+                ➜ Miłej gry!
             </div>
         </div>
     </div>
@@ -77,26 +86,30 @@
     <audio id="loading-music" loop><source src="cdnloading.ogg" type="audio/ogg"></audio>
 
     <script>
-        // --- KONFIGURACJA ZDJĘĆ ---
-        const images = ["cdn1.jpg", "cdn2.jpg", "cdn3.jpg", "cdn4.jpg", "cdn5.jpg", "cdn6.jpg"];
+        const images = ["cdn_1.jpg", "cdn_2.jpg", "cdn_3.jpg", "cdn_4.jpg", "cdn_5.jpg", "cdn_6.jpg", "cdn_7.jpg", "cdn_8.jpg", "cdn_9.jpg", "cdn_10.jpg", "cdn_11.jpg", "cdn_12.jpg", "cdn_13.jpg"];
         let currentIndex = 0;
 
-        // --- PRELOADING (Ładowanie do pamięci, by uniknąć mignięć) ---
-        images.forEach(src => {
-            const img = new Image();
-            img.src = src;
-        });
-
+        // --- PŁYNNA ZMIANA ZDJĘĆ ---
         function changeImage() {
-            const bg = document.getElementById('bg');
-            bg.style.backgroundImage = "url('" + images[currentIndex] + "')";
-            currentIndex = (currentIndex + 1) % images.length;
+            const img = new Image();
+            img.src = images[currentIndex];
+            img.onload = function() {
+                document.getElementById('bg').style.backgroundImage = "url('" + images[currentIndex] + "')";
+                currentIndex = (currentIndex + 1) % images.length;
+            };
         }
-
-        // Zmiana co 8 sekund, płynne przejście trwa 2.5 sekundy
         setInterval(changeImage, 8000);
         changeImage();
 
+        // --- ZEGAR ---
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- GMOD DATA ---
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
             document.getElementById("servername").innerText = servername;
             document.getElementById("mapname").innerText = mapname;
@@ -110,7 +123,7 @@
 
                 fetch(`https://api.steamid.uk{steamid}&request_type=player_summaries`)
                 .then(res => res.json()).then(data => {
-                    if(data && data.player_summaries && data.player_summaries.personaname) {
+                    if(data && data.player_summaries.personaname) {
                         document.getElementById("player-name").innerText = data.player_summaries.personaname;
                     }
                 }).catch(() => { document.getElementById("player-name").innerText = "Graczu"; });
@@ -124,10 +137,7 @@
             let progress = Math.min(100, Math.max(0, ((totalFiles - remaining) / totalFiles) * 100));
             document.getElementById("fill").style.width = progress + "%";
         }
-        function SetStatusChanged(status) { 
-            document.getElementById("status").innerText = status; 
-            if(document.getElementById("loading-music").paused) document.getElementById("loading-music").play();
-        }
+        function SetStatusChanged(status) { document.getElementById("status").innerText = status; }
         var totalFiles = 100;
     </script>
 </body>
