@@ -13,18 +13,18 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background-size: cover; background-position: center; 
             opacity: 0; 
-            transition: opacity 3s ease-in-out;
-            transform: scale(1.0);
+            transition: opacity 3s ease-in-out; /* Bardzo długie i płynne przenikanie */
         }
 
+        /* Animacja Ken Burns - teraz trwa 40 sekund i nie resetuje się gwałtownie */
         @keyframes kenburns {
-            0% { transform: scale(1.05); }
-            100% { transform: scale(1.4); }
+            0% { transform: scale(1.0); }
+            100% { transform: scale(1.3); }
         }
 
         .active { 
             opacity: 1; 
-            animation: kenburns 60s linear infinite; 
+            animation: kenburns 40s linear forwards; 
         }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 2; }
@@ -80,20 +80,32 @@
             const nextLayer = activeLayer === 1 ? 2 : 1;
             const currentEl = document.getElementById(`bg${activeLayer}`);
             const nextEl = document.getElementById(`bg${nextLayer}`);
-
+            
+            // 1. Przygotuj nową warstwę pod spodem (jeszcze niewidoczną)
             nextEl.style.backgroundImage = `url('${images[currentIndex]}')`;
-
+            nextEl.classList.remove('active');
+            
+            // Wymuś restart animacji dla nowej warstwy
+            void nextEl.offsetWidth; 
+            
+            // 2. Aktywuj nową warstwę (zacznie się pojawiać i przybliżać)
             nextEl.classList.add('active');
-
+            
+            // 3. Starą warstwę wygaś powoli (ale NIE usuwaj klasy active gwałtownie)
+            currentEl.style.opacity = "0";
+            
+            // Usuwamy klasę active dopiero po zakończeniu transition (3 sekundy)
             setTimeout(() => {
-                currentEl.classList.remove('active');
-            }, 50);
+                if (currentEl.style.opacity === "0") {
+                    currentEl.classList.remove('active');
+                }
+            }, 3000);
 
             activeLayer = nextLayer;
             currentIndex = (currentIndex + 1) % images.length;
         }
 
-        setInterval(changeImage, 7000);
+        setInterval(changeImage, 8000);
         changeImage();
 
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
