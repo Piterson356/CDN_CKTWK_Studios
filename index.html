@@ -18,25 +18,26 @@
         
         .main-layout { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-around; height: 100vh; padding: 0 50px; }
         
-        /* Panele boczne */
+        /* Panele boczne z DODANĄ POŚWIATĄ */
         .side-panel { 
             background: rgba(0, 0, 0, 0.85); padding: 30px; border-radius: 20px; 
-            border: 1px solid rgba(0, 170, 255, 0.2); width: 320px; min-height: 250px; 
+            border: 1px solid rgba(0, 170, 255, 0.3); width: 320px; min-height: 250px; 
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.2); /* Poświata bocznych paneli */
         }
 
-        /* Środkowy panel - prostokątny z LEKKĄ POŚWIATĄ */
+        /* Środkowy panel - prostokątny z poświatą */
         .center-panel-rect {
             background: rgba(0, 0, 0, 0.85); 
             padding: 40px 60px; 
             border-radius: 15px; 
-            border: 1px solid rgba(0, 170, 255, 0.5); /* Nieco wyraźniejsza krawędź */
+            border: 1px solid rgba(0, 170, 255, 0.5); 
             width: 500px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             justify-content: center;
-            box-shadow: 0 0 25px rgba(0, 170, 255, 0.3); /* EFEKT POŚWIATY (GLOW) */
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.3); /* Poświata środka */
         }
 
         /* --- STYL LISTY TRYBÓW --- */
@@ -59,7 +60,7 @@
             letter-spacing: 1px;
         }
 
-        h1 { color: #00aaff; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 5px; font-size: 28px; text-align: center; text-shadow: 0 0 10px rgba(0, 170, 255, 0.5); }
+        h1 { color: #00aaff; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 5px; font-size: 28px; text-align: center; }
         .info-row { color: #aaa; font-size: 14px; margin: 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .info-row span { color: white; font-weight: bold; }
     </style>
@@ -71,12 +72,11 @@
 
     <div class="main-layout">
         
-        <!-- LEWA STRONA: LISTA TRYBÓW -->
+        <!-- LEWA STRONA -->
         <div class="side-panel">
             <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
                 Dostępne Tryby
             </div>
-            
             <div class="gamemodes-container">
                 <div class="gamemode-item">Death Run</div>
                 <div class="gamemode-item">Stop it, Slender!</div>
@@ -87,19 +87,18 @@
             </div>
         </div>
         
-        <!-- ŚRODEK: INFORMACJE SERWERA -->
+        <!-- ŚRODEK -->
         <div class="center-panel-rect">
             <h1 id="servername">ŁĄCZENIE...</h1>
             <div class="info-row">TRYB: <span id="gamemode">Wczytywanie...</span></div>
             <div class="info-row">MAPA: <span id="mapname">Wczytywanie...</span></div>
         </div>
 
-        <!-- PRAWA STRONA: REGULAMIN -->
+        <!-- PRAWA STRONA -->
         <div class="side-panel">
             <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
                 Regulamin
             </div>
-            
             <div style="color:#ddd; font-size:0.85rem; line-height:1.8; width: 100%;">
                 ➜ Zakaz używania cheatów.<br>
                 ➜ Mikrofon od 16 lat (lub mutacja).<br>
