@@ -24,10 +24,16 @@
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
         }
 
+        /* Dodatkowa klasa dla środkowego panelu, by mógł być nieco szerszy jeśli trzeba */
+        .center-panel-box {
+            width: 400px; /* Nieco szerszy niż boczne dla lepszej czytelności nazwy serwera */
+            justify-content: center; /* Wyśrodkowanie zawartości w pionie */
+        }
+
         /* --- STYL LISTY TRYBÓW --- */
         .gamemodes-container {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Dwa rzędy/kolumny */
+            grid-template-columns: 1fr 1fr; 
             gap: 15px;
             width: 100%;
             margin-top: 15px;
@@ -44,8 +50,9 @@
             letter-spacing: 1px;
         }
 
-        .center-panel { text-align: center; width: 400px; }
-        h1 { color: #00aaff; margin: 10px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; }
+        h1 { color: #00aaff; margin: 10px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; text-align: center; }
+        .info-row { color: #aaa; font-size: 14px; margin: 8px 0; text-transform: uppercase; }
+        .info-row span { color: white; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -55,9 +62,7 @@
 
     <div class="main-layout">
         
-        <!-- ========================================== -->
-        <!-- LEWA STRONA: LISTA TRYBÓW (2 KOLUMNY) -->
-        <!-- ========================================== -->
+        <!-- LEWA STRONA: LISTA TRYBÓW -->
         <div class="side-panel">
             <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
                 Dostępne Tryby
@@ -66,25 +71,24 @@
             <div class="gamemodes-container">
                 <div class="gamemode-item">Death Run</div>
                 <div class="gamemode-item">Stop it, Slender!</div>
-                <div class="gamemode-item">Puzzle [Wkrótce]</div>
+                <div class="gamemode-item">Puzzle</div>
                 <div class="gamemode-item">Slashers</div>
                 <div class="gamemode-item">TTT</div>
                 <div class="gamemode-item">Prop Hunt</div>
             </div>
         </div>
         
-        <!-- ========================================== -->
-        <!-- ŚRODEK: INFORMACJE -->
-        <!-- ========================================== -->
-        <div class="center-panel">
-            <h1 id="servername" style="color:#00aaff; text-transform:uppercase; font-size:24px;">ŁĄCZENIE...</h1>
-            <div style="color:#aaa; font-size:13px; margin: 5px 0;">TRYB: <span id="gamemode" style="color:white;">Wczytywanie...</span></div>
-            <div style="color:#aaa; font-size:13px; margin: 5px 0;">MAPA: <span id="mapname" style="color:white;">Wczytywanie...</span></div>
+        <!-- ŚRODEK: INFORMACJE O SERWERZE  -->
+        <div class="side-panel center-panel-box">
+            <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
+                Status Połączenia
+            </div>
+            <h1 id="servername">ŁĄCZENIE...</h1>
+            <div class="info-row">Tryb: <span id="gamemode">Wczytywanie...</span></div>
+            <div class="info-row">Mapa: <span id="mapname">Wczytywanie...</span></div>
         </div>
 
-        <!-- ========================================== -->
         <!-- PRAWA STRONA: REGULAMIN -->
-        <!-- ========================================== -->
         <div class="side-panel">
             <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
                 Regulamin
@@ -101,7 +105,6 @@
 
     </div>
 
-    <!-- --- MUZYKA --- -->
     <audio id="loading-music" loop><source src="cdnloading.ogg" type="audio/ogg"></audio>
 
     <script>
@@ -118,7 +121,6 @@
         setInterval(changeImage, 8000); 
         changeImage();
 
-        // Podstawowa funkcja odbierająca dane z serwera
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
             document.getElementById("servername").innerText = servername;
             document.getElementById("mapname").innerText = mapname;
@@ -129,7 +131,6 @@
             music.play().catch(() => {});
         }
 
-        // Puste funkcje (wymagane, by Gmod nie wywalał błędów w konsoli)
         function SetFilesNeeded(n) {}
         function SetFilesRemaining(r) {}
         function SetStatusChanged(s) {}
