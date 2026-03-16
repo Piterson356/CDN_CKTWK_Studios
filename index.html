@@ -18,17 +18,18 @@
         
         .main-layout { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-around; height: 100vh; padding: 0 50px; }
         
-        /* Panele boczne z DODANĄ POŚWIATĄ */
+        /* Panele boczne */
         .side-panel { 
-            background: rgba(0, 0, 0, 0.85); padding: 30px; border-radius: 20px; 
+            background: rgba(0, 0, 0, 0.6); padding: 30px; border-radius: 20px; 
             border: 1px solid rgba(0, 170, 255, 0.3); width: 320px; min-height: 250px; 
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.2); /* Poświata bocznych paneli */
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.2); 
+            backdrop-filter: blur(5px);
         }
 
-        /* Środkowy panel - prostokątny z poświatą */
+        /* Środkowy panel */
         .center-panel-rect {
-            background: rgba(0, 0, 0, 0.85); 
+            background: rgba(0, 0, 0, 0.6); 
             padding: 40px 60px; 
             border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.5); 
@@ -37,7 +38,8 @@
             flex-direction: column; 
             align-items: center; 
             justify-content: center;
-            box-shadow: 0 0 25px rgba(0, 170, 255, 0.3); /* Poświata środka */
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
+            backdrop-filter: blur(5px);
         }
 
         /* --- STYL LISTY TRYBÓW --- */
@@ -60,7 +62,7 @@
             letter-spacing: 1px;
         }
 
-        h1 { color: #00aaff; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 5px; font-size: 28px; text-align: center; }
+        h1 { color: #00aaff; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 5px; font-size: 28px; text-align: center; text-shadow: 0 0 10px rgba(0, 170, 255, 0.6); }
         .info-row { color: #aaa; font-size: 14px; margin: 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .info-row span { color: white; font-weight: bold; }
     </style>
@@ -132,7 +134,7 @@
             document.getElementById("gamemode").innerText = gamemode;
             
             const music = document.getElementById("loading-music");
-            music.volume = 0.2; 
+            music.volume = 0.7; 
             music.play().catch(() => {});
         }
 
