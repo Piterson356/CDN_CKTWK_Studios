@@ -60,15 +60,15 @@
             backdrop-filter: blur(5px);
         }
 
-        /* Panel środkowy - IDEALNIE WYRÓWNANY DO DOŁU */
+        /* Panel środkowy - OBNIŻONY DO IDEALNEGO WYRÓWNANIA */
         .center-panel-rect {
             background: rgba(0, 0, 0, 0.6); padding: 40px 60px; border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.5); width: 500px; 
             display: flex; flex-direction: column; align-items: center; 
             justify-content: center; box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
             backdrop-filter: blur(5px);
-            align-self: flex-end; /* Wyrównanie do dolnej krawędzi wewnątrz flexboxa */
-            margin-bottom: calc((100vh - 400px) / 2 + 2px); /* Precyzyjna korekta pikselowa do dołu bocznych paneli */
+            align-self: flex-end; 
+            margin-bottom: calc((100vh - 400px) / 2 + 6px); /* Zwiększono na + 6px dla mocniejszego obniżenia */
         }
 
         /* --- KONTENER LISTY TRYBÓW - ORYGINALNY, NIENARUSZONY --- */
