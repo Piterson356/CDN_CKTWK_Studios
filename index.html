@@ -23,25 +23,26 @@
             background: rgba(0, 0, 0, 0.4); z-index: 2; 
         }
         
-        /* Układ główny - ORYGINALNY, NIENARUSZONY */
+        /* Układ główny */
         .main-layout { 
             position: relative; z-index: 3; display: flex; 
             align-items: center; justify-content: space-around; 
-            height: 100vh; padding: 0 50px; 
+            height: 100vh; padding: 0 120px; /* Zwiększony padding dla lepszej stabilizacji krawędzi */
+            box-sizing: border-box;
         }
 
-        /* NOWA SZEROKA RAMKA NA GÓRZE - DOPASOWANA DO KRAWĘDZI I OBNIŻONA */
+        /* NOWA SZEROKA RAMKA NA GÓRZE - W PEŁNI ELASTYCZNA I ROZCIĄGNIĘTA */
         .top-panel-rect {
             position: absolute;
-            top: 65px; /* Linia 43: Regulacja wysokości ramki górnej (większa liczba = niżej) */
+            top: 65px; /* Linia 43: Obniżenie ramki */
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.6); 
             padding: 15px 60px; 
             border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.5); 
-            width: calc(100% - 100px); /* Idealne wyrównanie do paddingu 50px bocznych ścianek */
-            max-width: 1240px; /* Łączna szerokość paneli dolnych i ich przestrzeni bocznych */
+            width: calc(100% - 240px); /* Dynamiczne dopasowanie do szerokości bocznych paneli */
+            max-width: 1440px; /* Zwiększony limit szerokości, by ramka mogła się mocniej rozciągnąć */
             display: flex; 
             align-items: center; 
             justify-content: center; 
@@ -60,7 +61,7 @@
             backdrop-filter: blur(5px);
         }
 
-        /* Panel środkowy - WYRÓWNANY NA IDEALNE -30PX */
+        /* Panel środkowy - Z TWOIM IDEALNYM WYRÓWNANIEM -30PX */
         .center-panel-rect {
             background: rgba(0, 0, 0, 0.6); padding: 40px 60px; border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.5); width: 500px; 
