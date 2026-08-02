@@ -30,18 +30,18 @@
             height: 100vh; padding: 0 50px; 
         }
 
-        /* NOWA SZEROKA RAMKA NA GÓRZE (Pozycjonowana niezależnie) */
+        /* NOWA SZEROKA RAMKA NA GÓRZE - DOPASOWANA DO KRAWĘDZI I OBNIŻONA */
         .top-panel-rect {
             position: absolute;
-            top: 40px;
+            top: 65px; /* Linia 43: Regulacja wysokości ramki górnej (większa liczba = niżej) */
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.6); 
             padding: 15px 60px; 
             border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.5); 
-            width: 80%; 
-            max-width: 1200px;
+            width: calc(100% - 100px); /* Idealne wyrównanie do paddingu 50px bocznych ścianek */
+            max-width: 1240px; /* Łączna szerokość paneli dolnych i ich przestrzeni bocznych */
             display: flex; 
             align-items: center; 
             justify-content: center; 
@@ -60,7 +60,7 @@
             backdrop-filter: blur(5px);
         }
 
-        /* Panel środkowy - DELIKATNIE UNIESIONY DLA IDEALNEGO WYRÓWNANIA */
+        /* Panel środkowy - WYRÓWNANY NA IDEALNE -30PX */
         .center-panel-rect {
             background: rgba(0, 0, 0, 0.6); padding: 40px 60px; border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.5); width: 500px; 
@@ -68,7 +68,7 @@
             justify-content: center; box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
             backdrop-filter: blur(5px);
             align-self: flex-end; 
-            margin-bottom: calc((100vh - 400px) / 2 - 30px);
+            margin-bottom: calc((100vh - 400px) / 2 - 30px); /* Linia 74: Twoja idealna wartość */
         }
 
         /* --- KONTENER LISTY TRYBÓW - ORYGINALNY, NIENARUSZONY --- */
