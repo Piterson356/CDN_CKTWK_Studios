@@ -23,32 +23,33 @@
             background: rgba(0, 0, 0, 0.4); z-index: 2; 
         }
         
-        /* UKŁAD SIATKI (GRID) */
+        /* SYSTEM SIATKI (GRID) */
         .main-layout { 
             position: relative; 
             z-index: 3; 
             display: grid;
-            /* 3 kolumny: lewa (tryby), środkowa (pusta/status), prawa (regulamin) */
-            grid-template-columns: 380px 1fr 380px;
-            /* 3 wiersze: góra (panel nazwy serwera), środek (pusty), dół (panel statusu) */
-            grid-template-rows: auto 1fr auto;
+            /* 3 kolumny: lewa (stała), środkowa (elastyczna), prawa (stała) */
+            grid-template-columns: 320px 1fr 320px;
+            /* 2 wiersze: góra (nagłówek), dół (miejsce na wszystkie 3 panele) */
+            grid-template-rows: auto 1fr;
             height: 100vh; 
             box-sizing: border-box;
-            padding: 40px;
+            padding: 50px;
             gap: 20px;
         }
         
-        /* PANEL U GÓRY (DYNAMICZNA NAZWA SERWERA) */
+        /* PANEL U GÓRY (ROZCIĄGNIĘTY OD LEWEJ DO PRAWEJ KRAWĘDZI PANELI) */
         .top-panel {
-            grid-column: 1 / -1; /* Rozciąga się od lewej do prawej krawędzi */
-            justify-self: center; /* Wyśrodkowanie poziome */
+            grid-column: 1 / -1; /* Rozciągnięcie na wszystkie 3 kolumny */
+            width: 100%;         /* Wypełnienie całej dostępnej szerokości */
             background: rgba(0, 0, 0, 0.6); 
-            padding: 15px 60px; 
+            padding: 15px 0;     /* Górny i dolny wewnętrzny odstęp */
             border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.4); 
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.2);
             backdrop-filter: blur(5px);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            box-sizing: border-box;
         }
 
         .top-panel h2 {
@@ -56,7 +57,7 @@
             color: #00aaff;
             text-transform: uppercase;
             letter-spacing: 6px;
-            font-size: 26px;
+            font-size: 28px;
             text-align: center;
             text-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
         }
@@ -65,60 +66,65 @@
         .side-panel { 
             background: rgba(0, 0, 0, 0.6); padding: 30px; border-radius: 20px; 
             border: 1px solid rgba(0, 170, 255, 0.3); 
-            height: 450px; 
+            width: 320px; height: 400px; 
             display: flex; flex-direction: column; align-items: center; 
             justify-content: flex-start; box-shadow: 0 0 20px rgba(0, 170, 255, 0.2); 
             backdrop-filter: blur(5px);
-            grid-row: 2; /* Pozycja w środkowym wierszu */
+            box-sizing: border-box;
+            
+            grid-row: 2;      
+            align-self: end;  /* Wyrównanie dolnej krawędzi */
         }
 
-        .left-panel { grid-column: 1; align-self: center; }
-        .right-panel { grid-column: 3; align-self: center; }
+        .left-panel { grid-column: 1; }
+        .right-panel { grid-column: 3; }
 
-        /* PANEL ŚRODKOWY (NA DOLE NA STAŁE MULTIGAMEMODE) */
+        /* PANEL ŚRODKOWY (DOPASOWANY WYMIAR, WYRÓWNANY DO SPODU) */
         .center-panel-rect {
-            grid-column: 2; /* Środkowa kolumna */
-            grid-row: 3;    /* Dolny wiersz */
-            justify-self: center; /* Wyśrodkowanie pomiędzy panelami bocznymi */
-            align-self: end;      /* Wyrównanie do samego dołu */
-            background: rgba(0, 0, 0, 0.6); padding: 25px 50px; border-radius: 15px; 
-            border: 1px solid rgba(0, 170, 255, 0.5); width: 450px; 
+            grid-column: 2;   
+            grid-row: 2;      
+            justify-self: center; 
+            align-self: end;  /* Trzyma dół panelu w jednej linii z bocznymi */
+            
+            background: rgba(0, 0, 0, 0.6); padding: 40px 60px; border-radius: 15px; 
+            border: 1px solid rgba(0, 170, 255, 0.5); width: 500px; 
             display: flex; flex-direction: column; align-items: center; 
             justify-content: center; box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
             backdrop-filter: blur(5px);
+            box-sizing: border-box;
         }
 
         /* --- KONTENER LISTY TRYBÓW --- */
         .gamemodes-container {
             display: grid;
             grid-template-columns: 1fr 1fr; 
-            gap: 12px;
+            gap: 15px;
             width: 100%;
             margin-top: 15px;
-            height: 350px; 
+            max-height: 330px; 
             overflow: hidden; 
-            padding-top: 20px; 
-            padding-bottom: 20px;
+            padding-top: 40px; 
+            padding-bottom: 40px;
             box-sizing: border-box;
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
-            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
         }
 
         /* STYL POJEDYNCZEGO TRYBU */
         .gamemode-item {
             background: rgba(0, 170, 255, 0.1);
             border: 1px solid rgba(0, 170, 255, 0.3);
-            padding: 6px 8px;
+            padding: 4px 8px;
             border-radius: 6px;
-            font-size: 0.8rem; color: #fff;
+            font-size: 0.85rem; color: #fff;
             text-transform: uppercase; letter-spacing: 1px;
             display: flex; align-items: center; justify-content: center;
-            text-align: center; min-height: 35px; box-sizing: border-box;
+            text-align: center; min-height: 35px;
         }
 
         /* Styl napisów nagłówkowych */
-        h1 { color: #00aaff; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; text-align: center; text-shadow: 0 0 10px rgba(0, 170, 255, 0.6); }
-        .info-row { color: #aaa; font-size: 13px; margin: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
+        h1 { color: #00aaff; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 5px; font-size: 28px; text-align: center; text-shadow: 0 0 10px rgba(0, 170, 255, 0.6); }
+        .info-row { color: #aaa; font-size: 14px; margin: 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .info-row span { color: white; font-weight: bold; }
 
         /* Treść regulaminu */
@@ -132,7 +138,7 @@
 
     <div class="main-layout">
         
-        <!-- NOWY PANEL GÓRNY - TUTAJ TRAFI NAZWA Z SILNIKA -->
+        <!-- PANEL GÓRNY ROZCIĄGNIĘTY DO ZEWNĘTRZNYCH KRAWĘDZI PANELI BOCZNYCH -->
         <div class="top-panel">
             <h2 id="servername">Wczytywanie nazwy...</h2>
         </div>
@@ -174,7 +180,7 @@
             </div>
         </div>
         
-        <!-- PANEL ŚRODKOWY (PRZENIESIONY NA DÓŁ) -->
+        <!-- PANEL ŚRODKOWY: NIŻSZY, Z WYRÓWNANĄ DOLNĄ KRAWĘDZIĄ -->
         <div class="center-panel-rect">
             <h1>MultiGamemode</h1>
             <div class="info-row">TRYB: <span id="gamemode">Wczytywanie...</span></div>
@@ -217,7 +223,6 @@
 
         // --- FUNKCJA ODBIERAJĄCA DANE Z SERWERA ---
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
-            // Teraz element 'servername' to nagłówek H2 w górnym panelu
             document.getElementById("servername").innerText = servername;
             document.getElementById("mapname").innerText = mapname;
             document.getElementById("gamemode").innerText = gamemode;
