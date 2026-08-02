@@ -26,30 +26,22 @@
         /* Układ główny */
         .main-layout { 
             position: relative; z-index: 3; display: flex; 
-            align-items: center; justify-content: space-around; 
-            height: 100vh; padding: 0 50px; 
-            flex-direction: row; /* Zapewnia poprawny układ paneli obok siebie */
+            flex-direction: column; align-items: center; justify-content: center; 
+            height: 100vh; padding: 0 50px; box-sizing: border-box; gap: 30px;
         }
 
-        /* --- NOWA RAMKA NA GÓRZE --- */
-        .top-server-badge {
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            padding: 12px 40px;
-            border-radius: 8px;
-            border: 1px solid rgba(0, 170, 255, 0.6);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
-            backdrop-filter: blur(5px);
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #00ffcc;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-align: center;
-            white-space: nowrap;
+        /* NOWY PANEL GÓRNY */
+        .top-panel {
+            background: rgba(0, 0, 0, 0.6); padding: 20px 40px; border-radius: 15px; 
+            border: 1px solid rgba(0, 170, 255, 0.5); width: 80%; max-width: 1200px;
+            display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.3); backdrop-filter: blur(5px);
+        }
+        
+        /* Sekcja dolna z 3 panelami */
+        .bottom-sections {
+            display: flex; justify-content: space-around; align-items: center;
+            width: 100%; max-width: 1400px;
         }
         
         /* Panele boczne */
@@ -65,10 +57,17 @@
         /* Panel środkowy */
         .center-panel-rect {
             background: rgba(0, 0, 0, 0.6); padding: 40px 60px; border-radius: 15px; 
-            border: 1px solid rgba(0, 170, 255, 0.5); width: 500px; 
+            border: 1px solid rgba(0, 170, 255, 0.5); width: 500px; height: 400px;
             display: flex; flex-direction: column; align-items: center; 
             justify-content: center; box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px); box-sizing: border-box;
+        }
+
+        /* Stały napis w panelu środkowym */
+        .static-title {
+            color: #fff; font-weight: bold; margin: 0 0 25px 0; 
+            text-transform: uppercase; letter-spacing: 4px; font-size: 26px; 
+            text-align: center; text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
         }
 
         /* --- KONTENER LISTY TRYBÓW --- */
@@ -116,7 +115,7 @@
         }
 
         /* Styl napisów nagłówkowych */
-        h1 { color: #00aaff; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 5px; font-size: 28px; text-align: center; text-shadow: 0 0 10px rgba(0, 170, 255, 0.6); }
+        h1 { color: #00aaff; margin: 0; text-transform: uppercase; letter-spacing: 5px; font-size: 28px; text-align: center; text-shadow: 0 0 10px rgba(0, 170, 255, 0.6); }
         .info-row { color: #aaa; font-size: 14px; margin: 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .info-row span { color: white; font-weight: bold; }
 
@@ -129,41 +128,48 @@
     <div id="bg"></div>
     <div class="overlay"></div>
 
-    <!-- NOWA RAMKA NA NAZWĘ SERWERA -->
-    <div class="top-server-badge" id="top-servername">ŁĄCZENIE...</div>
-
     <div class="main-layout">
         
-        <!-- PANEL LEWY: LISTA TRYBÓW -->
-        <div class="side-panel">
-            <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
-                Dostępne Tryby
-            </div>
-            <div class="gamemodes-container" id="modes-list">
-                <div class="gamemode-item">Death Run</div>
-                <div class="gamemode-item">Stop it, Slender!</div>
-            </div>
-        </div>
-        
-        <!-- PANEL ŚRODKOWY Z NAPISEM NA SZTYWNO -->
-        <div class="center-panel-rect">
-            <h1>MULTI-GAMEMODE</h1>
-            <div class="info-row">TRYB: <span id="gamemode">Wczytywanie...</span></div>
-            <div class="info-row">MAPA: <span id="mapname">Wczytywanie...</span></div>
+        <!-- NOWA SZEROKA RAMKA NA GÓRZE -->
+        <div class="top-panel">
+            <h1 id="servername">ŁĄCZENIE...</h1>
         </div>
 
-        <!-- PANEL PRAWY: REGULAMIN -->
-        <div class="side-panel">
-            <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
-                Regulamin
+        <!-- SEKCJA DOLNA (TRZY KOLUMNY) -->
+        <div class="bottom-sections">
+            
+            <!-- PANEL LEWY: LISTA TRYBÓW -->
+            <div class="side-panel">
+                <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
+                    Dostępne Tryby
+                </div>
+                <div class="gamemodes-container" id="modes-list">
+                    <div class="gamemode-item">Death Run</div>
+                    <div class="gamemode-item">Stop it, Slender!</div>
+                </div>
             </div>
-            <div class="rules-content">
-                ➜ Szanuj innych graczy i administrację.<br>
-                ➜ Zakaz używania cheatów.<br>
-                ➜ Nie spamuj na czacie głosowym ani tekstowym.<br>
-                ➜ Graj zgodnie z celami wyznaczonymi przez tryb gry.<br>
-                ➜ Baw się dobrze!<br>
+            
+            <!-- PANEL ŚRODKOWY -->
+            <div class="center-panel-rect">
+                <div class="static-title">multi-gamemode</div>
+                <div class="info-row">TRYB: <span id="gamemode">Wczytywanie...</span></div>
+                <div class="info-row">MAPA: <span id="mapname">Wczytywanie...</span></div>
             </div>
+
+            <!-- PANEL PRAWY: REGULAMIN -->
+            <div class="side-panel">
+                <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
+                    Regulamin
+                </div>
+                <div class="rules-content">
+                    ➜ Szanuj innych graczy i administrację.<br>
+                    ➜ Zakaz używania cheatów.<br>
+                    ➜ Nie spamuj na czacie głosowym ani tekstowym.<br>
+                    ➜ Graj zgodnie z celami wyznaczonymi przez tryb gry.<br>
+                    ➜ Baw się dobrze!<br>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -188,8 +194,7 @@
 
         // --- FUNKCJA ODBIERAJĄCA DANE Z SERWERA ---
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
-            // Zmiana: Nazwa serwera przekazywana jest do nowej ramki na górze
-            document.getElementById("top-servername").innerText = servername;
+            document.getElementById("servername").innerText = servername;
             document.getElementById("mapname").innerText = mapname;
             document.getElementById("gamemode").innerText = gamemode;
     
