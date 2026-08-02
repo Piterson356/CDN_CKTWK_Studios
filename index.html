@@ -23,41 +23,36 @@
             background: rgba(0, 0, 0, 0.4); z-index: 2; 
         }
         
-        /* Układ główny - zachowane justify-space-around i flex */
+        /* Układ główny */
         .main-layout { 
             position: relative; z-index: 3; display: flex; 
             align-items: center; justify-content: space-around; 
             height: 100vh; padding: 0 50px; 
-            flex-wrap: wrap; /* Pozwala na prawidłowe ułożenie nowego panelu u góry */
-            box-sizing: border-box;
+            flex-direction: row; /* Zapewnia poprawny układ paneli obok siebie */
         }
 
-        /* NOWY PANEL GÓRNY (DYNAMICZNA NAZWA SERWERA) */
-        .top-server-banner {
-            width: 100%;
-            max-width: calc(100% - 100px); /* Idealne wyrównanie z marginesem layoutu */
-            background: rgba(0, 0, 0, 0.6); 
-            padding: 30px 0; 
-            border-radius: 15px; 
-            border: 1px solid rgba(0, 170, 255, 0.4); 
-            box-shadow: 0 0 25px rgba(0, 170, 255, 0.2);
+        /* --- NOWA RAMKA NA GÓRZE --- */
+        .top-server-badge {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 40px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 170, 255, 0.6);
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
             backdrop-filter: blur(5px);
-            box-sizing: border-box;
-            margin-top: 40px;
-            margin-bottom: -40px; /* Kompensacja pozycji dla zachowania środka paneli bocznych */
-        }
-
-        .top-server-banner h2 {
-            margin: 0;
-            color: #00aaff;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #00ffcc;
             text-transform: uppercase;
-            letter-spacing: 8px;
-            font-size: 38px;
+            letter-spacing: 3px;
             text-align: center;
-            text-shadow: 0 0 15px rgba(0, 170, 255, 0.7);
+            white-space: nowrap;
         }
         
-        /* Panele boczne - NIETKNIĘTE */
+        /* Panele boczne */
         .side-panel { 
             background: rgba(0, 0, 0, 0.6); padding: 30px; border-radius: 20px; 
             border: 1px solid rgba(0, 170, 255, 0.3); 
@@ -65,23 +60,18 @@
             display: flex; flex-direction: column; align-items: center; 
             justify-content: flex-start; box-shadow: 0 0 20px rgba(0, 170, 255, 0.2); 
             backdrop-filter: blur(5px);
-            box-sizing: border-box;
         }
 
-        /* Panel środkowy - zachowany rozmiar, obniżony na dół bocznych paneli */
+        /* Panel środkowy */
         .center-panel-rect {
             background: rgba(0, 0, 0, 0.6); padding: 40px 60px; border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.5); width: 500px; 
             display: flex; flex-direction: column; align-items: center; 
             justify-content: center; box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
             backdrop-filter: blur(5px);
-            box-sizing: border-box;
-            
-            /* Przesunięcie na dół i wyrównanie dolnej krawędzi do dołu paneli bocznych */
-            margin-top: calc(400px - 213px); 
         }
 
-        /* --- KONTENER LISTY TRYBÓW - NIETKNIĘTE --- */
+        /* --- KONTENER LISTY TRYBÓW --- */
         .gamemodes-container {
             display: grid;
             grid-template-columns: 1fr 1fr; 
@@ -109,7 +99,7 @@
             );
         }
 
-        /* STYL POJEDYNCZEGO TRYBU - NIETKNIĘTE */
+        /* STYL POJEDYNCZEGO TRYBU */
         .gamemode-item {
             background: rgba(0, 170, 255, 0.1);
             border: 1px solid rgba(0, 170, 255, 0.3);
@@ -125,12 +115,12 @@
             min-height: 35px;
         }
 
-        /* Styl napisów nagłówkowych - NIETKNIĘTE */
+        /* Styl napisów nagłówkowych */
         h1 { color: #00aaff; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 5px; font-size: 28px; text-align: center; text-shadow: 0 0 10px rgba(0, 170, 255, 0.6); }
         .info-row { color: #aaa; font-size: 14px; margin: 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .info-row span { color: white; font-weight: bold; }
 
-        /* Treść regulaminu - NIETKNIĘTE */
+        /* Treść regulaminu */
         .rules-content { color: #ddd; font-size: 0.85rem; line-height: 1.8; width: 100%; text-align: left; margin-top: 10px; }
     </style>
 </head>
@@ -139,14 +129,12 @@
     <div id="bg"></div>
     <div class="overlay"></div>
 
+    <!-- NOWA RAMKA NA NAZWĘ SERWERA -->
+    <div class="top-server-badge" id="top-servername">ŁĄCZENIE...</div>
+
     <div class="main-layout">
         
-        <!-- NOWY PANEL GÓRNY (SZEROKI, GRUBY, POBIERA NAZWĘ SERWERA) -->
-        <div class="top-server-banner">
-            <h2 id="servername">ŁĄCZENIE...</h2>
-        </div>
-        
-        <!-- PANEL LEWY: LISTA TRYBÓW - NIETKNIĘTE -->
+        <!-- PANEL LEWY: LISTA TRYBÓW -->
         <div class="side-panel">
             <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
                 Dostępne Tryby
@@ -154,43 +142,17 @@
             <div class="gamemodes-container" id="modes-list">
                 <div class="gamemode-item">Death Run</div>
                 <div class="gamemode-item">Stop it, Slender!</div>
-                <div class="gamemode-item">Puzzle [AWARIA]</div>
-                <div class="gamemode-item">Slashers</div>
-                <div class="gamemode-item">TTT</div>
-                <div class="gamemode-item">Prop Hunt</div>
-                <div class="gamemode-item">Fazbear Hunt</div>
-                <div class="gamemode-item">The Floor Is Lava</div>
-                <div class="gamemode-item">Melon Bomber</div>
-                <div class="gamemode-item">Trash Compactor</div>
-                <div class="gamemode-item">Among US [BETA]</div>
-                <div class="gamemode-item">Murderer</div>
-                <div class="gamemode-item">Hide And Seek</div>
-                <div class="gamemode-item">Elevator: Source</div>
-                <div class="gamemode-item">Zombie Survival</div>
-                <div class="gamemode-item">You Touched it Last</div>
-                <div class="gamemode-item">The Hidden</div>
-                <div class="gamemode-item">Cops And Runners</div>
-                <div class="gamemode-item">Wario-Ware</div>
-                <div class="gamemode-item">Dropzone</div>
-                <div class="gamemode-item">Ragdoll Combat [WYŁĄCZONE]</div>
-                <div class="gamemode-item">Guess Who [BETA]</div>
-                <div class="gamemode-item">Smash [WYŁĄCZONE]</div>
-                <div class="gamemode-item">Bug Boys [WYŁĄCZONE]</div>
-                <div class="gamemode-item">MelonRacer 2.0 [WYŁĄCZONE]</div>
-                <div class="gamemode-item">MiniGames [WYŁĄCZONE]</div>
-                <div class="gamemode-item">Divers Vs Sharks [WYŁĄCZONE]</div>
-                <div class="gamemode-item">Slendytubbies [WKRÓTCE]</div>
             </div>
         </div>
         
-        <!-- PANEL ŚRODKOWY - OBNIŻONY, Z SZTYWNYM NAPISEM MULTIGAMEMODE -->
+        <!-- PANEL ŚRODKOWY Z NAPISEM NA SZTYWNO -->
         <div class="center-panel-rect">
-            <h1>Multi-Gamemode</h1>
+            <h1>MULTI-GAMEMODE</h1>
             <div class="info-row">TRYB: <span id="gamemode">Wczytywanie...</span></div>
             <div class="info-row">MAPA: <span id="mapname">Wczytywanie...</span></div>
         </div>
 
-        <!-- PANEL PRAWY: REGULAMIN - NIETKNIĘTE -->
+        <!-- PANEL PRAWY: REGULAMIN -->
         <div class="side-panel">
             <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
                 Regulamin
@@ -209,7 +171,7 @@
     <audio id="loading-music" loop><source src="cdnloading1.ogg" type="audio/ogg"></audio>
 
     <script>
-        // --- KONFIGURACJA OBRAZÓW TŁA - NIETKNIĘTE ---
+        // --- KONFIGURACJA OBRAZÓW TŁA ---
         const images = ["cdn_01.jpg", "cdn_02.jpg", "cdn_03.jpg", "cdn_04.jpg", "cdn_05.jpg", "cdn_06.jpg", "cdn_07.jpg", "cdn_08.jpg"];
         let currentIndex = 0;
 
@@ -226,8 +188,8 @@
 
         // --- FUNKCJA ODBIERAJĄCA DANE Z SERWERA ---
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
-            // ID 'servername' przypisane do nowego, grubego panelu u góry
-            document.getElementById("servername").innerText = servername;
+            // Zmiana: Nazwa serwera przekazywana jest do nowej ramki na górze
+            document.getElementById("top-servername").innerText = servername;
             document.getElementById("mapname").innerText = mapname;
             document.getElementById("gamemode").innerText = gamemode;
     
@@ -236,7 +198,7 @@
             music.play().catch(() => {});
         }
 
-        // --- SKRYPT AUTOMATYCZNEGO PRZEWIJANIA - NIETKNIĘTE ---
+        // --- SKRYPT AUTOMATYCZNEGO PRZEWIJANIA ---
         function startAutoScroll() {
             const container = document.getElementById('modes-list');
             let scrollAmount = 0;
