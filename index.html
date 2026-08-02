@@ -23,47 +23,41 @@
             background: rgba(0, 0, 0, 0.4); z-index: 2; 
         }
         
-        /* SYSTEM SIATKI (GRID) */
+        /* Układ główny - zachowane justify-space-around i flex */
         .main-layout { 
-            position: relative; 
-            z-index: 3; 
-            display: grid;
-            /* 3 kolumny: lewa (stała), środkowa (elastyczna), prawa (stała) */
-            grid-template-columns: 320px 1fr 320px;
-            /* 2 wiersze: góra (nagłówek), dół (sekcja na panele) */
-            grid-template-rows: auto 1fr;
-            height: 100vh; 
+            position: relative; z-index: 3; display: flex; 
+            align-items: center; justify-content: space-around; 
+            height: 100vh; padding: 0 50px; 
+            flex-wrap: wrap; /* Pozwala na prawidłowe ułożenie nowego panelu u góry */
             box-sizing: border-box;
-            padding: 50px;
-            gap: 20px;
         }
-        
-        /* PANEL U GÓRY (GRUBSZA RAMKA) */
-        .top-panel {
-            grid-column: 1 / -1; 
-            width: 100%;         
+
+        /* NOWY PANEL GÓRNY (DYNAMICZNA NAZWA SERWERA) */
+        .top-server-banner {
+            width: 100%;
+            max-width: calc(100% - 100px); /* Idealne wyrównanie z marginesem layoutu */
             background: rgba(0, 0, 0, 0.6); 
-            padding: 30px 0;     /* ZWIĘKSZONO: Grubsza ramka w pionie */
+            padding: 30px 0; 
             border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.4); 
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.2);
             backdrop-filter: blur(5px);
-            margin-bottom: 30px;
             box-sizing: border-box;
+            margin-top: 40px;
+            margin-bottom: -40px; /* Kompensacja pozycji dla zachowania środka paneli bocznych */
         }
 
-        /* STYL WIĘKSZEGO NAPISU GŁÓWNEGO */
-        .top-panel h2 {
+        .top-server-banner h2 {
             margin: 0;
             color: #00aaff;
             text-transform: uppercase;
-            letter-spacing: 8px; /* Lekko zwiększony rozstaw liter dla lepszego efektu */
-            font-size: 38px;     /* ZWIĘKSZONO: Większa czcionka dla nazwy serwera */
+            letter-spacing: 8px;
+            font-size: 38px;
             text-align: center;
-            text-shadow: 0 0 15px rgba(0, 170, 255, 0.7); /* Mocniejsza poświata neonu */
+            text-shadow: 0 0 15px rgba(0, 170, 255, 0.7);
         }
-
-        /* PANELE BOCZNE (WYŚRODKOWANE W PIONIE) */
+        
+        /* Panele boczne - NIETKNIĘTE */
         .side-panel { 
             background: rgba(0, 0, 0, 0.6); padding: 30px; border-radius: 20px; 
             border: 1px solid rgba(0, 170, 255, 0.3); 
@@ -72,31 +66,22 @@
             justify-content: flex-start; box-shadow: 0 0 20px rgba(0, 170, 255, 0.2); 
             backdrop-filter: blur(5px);
             box-sizing: border-box;
-            
-            grid-row: 2;      
-            align-self: center; 
         }
 
-        .left-panel { grid-column: 1; }
-        .right-panel { grid-column: 3; }
-
-        /* PANEL ŚRODKOWY (OBNIŻONY DO DOLNEJ KRAWĘDZI PANELI BOCZNYCH) */
+        /* Panel środkowy - zachowany rozmiar, obniżony na dół bocznych paneli */
         .center-panel-rect {
-            grid-column: 2;   
-            grid-row: 2;      
-            justify-self: center; 
-            align-self: end;  
-            margin-bottom: calc((100vh - 100px - 400px) / 4); 
-            
             background: rgba(0, 0, 0, 0.6); padding: 40px 60px; border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.5); width: 500px; 
             display: flex; flex-direction: column; align-items: center; 
             justify-content: center; box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
             backdrop-filter: blur(5px);
             box-sizing: border-box;
+            
+            /* Przesunięcie na dół i wyrównanie dolnej krawędzi do dołu paneli bocznych */
+            margin-top: calc(400px - 213px); 
         }
 
-        /* --- KONTENER LISTY TRYBÓW --- */
+        /* --- KONTENER LISTY TRYBÓW - NIETKNIĘTE --- */
         .gamemodes-container {
             display: grid;
             grid-template-columns: 1fr 1fr; 
@@ -105,14 +90,26 @@
             margin-top: 15px;
             max-height: 330px; 
             overflow: hidden; 
+
             padding-top: 40px; 
             padding-bottom: 40px;
             box-sizing: border-box;
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+
+            -webkit-mask-image: linear-gradient(to bottom, 
+                transparent 0%, 
+                black 15%, 
+                black 85%, 
+                transparent 100%
+            );
+            mask-image: linear-gradient(to bottom, 
+                transparent 0%, 
+                black 15%, 
+                black 85%, 
+                transparent 100%
+            );
         }
 
-        /* STYL POJEDYNCZEGO TRYBU */
+        /* STYL POJEDYNCZEGO TRYBU - NIETKNIĘTE */
         .gamemode-item {
             background: rgba(0, 170, 255, 0.1);
             border: 1px solid rgba(0, 170, 255, 0.3);
@@ -120,16 +117,20 @@
             border-radius: 6px;
             font-size: 0.85rem; color: #fff;
             text-transform: uppercase; letter-spacing: 1px;
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; min-height: 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 35px;
         }
 
-        /* Styl napisów nagłówkowych */
+        /* Styl napisów nagłówkowych - NIETKNIĘTE */
         h1 { color: #00aaff; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 5px; font-size: 28px; text-align: center; text-shadow: 0 0 10px rgba(0, 170, 255, 0.6); }
         .info-row { color: #aaa; font-size: 14px; margin: 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .info-row span { color: white; font-weight: bold; }
 
-        /* Treść regulaminu */
+        /* Treść regulaminu - NIETKNIĘTE */
         .rules-content { color: #ddd; font-size: 0.85rem; line-height: 1.8; width: 100%; text-align: left; margin-top: 10px; }
     </style>
 </head>
@@ -140,13 +141,13 @@
 
     <div class="main-layout">
         
-        <!-- POGRUBIONY PANEL GÓRNY -->
-        <div class="top-panel">
-            <h2 id="servername">Wczytywanie nazwy...</h2>
+        <!-- NOWY PANEL GÓRNY (SZEROKI, GRUBY, POBIERA NAZWĘ SERWERA) -->
+        <div class="top-server-banner">
+            <h2 id="servername">ŁĄCZENIE...</h2>
         </div>
         
-        <!-- PANEL LEWY: LISTA TRYBÓW -->
-        <div class="side-panel left-panel">
+        <!-- PANEL LEWY: LISTA TRYBÓW - NIETKNIĘTE -->
+        <div class="side-panel">
             <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
                 Dostępne Tryby
             </div>
@@ -182,15 +183,15 @@
             </div>
         </div>
         
-        <!-- PANEL ŚRODKOWY -->
+        <!-- PANEL ŚRODKOWY - OBNIŻONY, Z SZTYWNYM NAPISEM MULTIGAMEMODE -->
         <div class="center-panel-rect">
-            <h1>MultiGamemode</h1>
+            <h1>Multi-Gamemode</h1>
             <div class="info-row">TRYB: <span id="gamemode">Wczytywanie...</span></div>
             <div class="info-row">MAPA: <span id="mapname">Wczytywanie...</span></div>
         </div>
 
-        <!-- PANEL PRAWY: REGULAMIN -->
-        <div class="side-panel right-panel">
+        <!-- PANEL PRAWY: REGULAMIN - NIETKNIĘTE -->
+        <div class="side-panel">
             <div style="color:#00ffcc; text-transform:uppercase; border-bottom:1px solid #333; width:100%; text-align:center; padding-bottom:8px; margin-bottom:15px;">
                 Regulamin
             </div>
@@ -208,7 +209,7 @@
     <audio id="loading-music" loop><source src="cdnloading1.ogg" type="audio/ogg"></audio>
 
     <script>
-        // --- KONFIGURACJA OBRAZÓW TŁA ---
+        // --- KONFIGURACJA OBRAZÓW TŁA - NIETKNIĘTE ---
         const images = ["cdn_01.jpg", "cdn_02.jpg", "cdn_03.jpg", "cdn_04.jpg", "cdn_05.jpg", "cdn_06.jpg", "cdn_07.jpg", "cdn_08.jpg"];
         let currentIndex = 0;
 
@@ -225,6 +226,7 @@
 
         // --- FUNKCJA ODBIERAJĄCA DANE Z SERWERA ---
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
+            // ID 'servername' przypisane do nowego, grubego panelu u góry
             document.getElementById("servername").innerText = servername;
             document.getElementById("mapname").innerText = mapname;
             document.getElementById("gamemode").innerText = gamemode;
@@ -234,7 +236,7 @@
             music.play().catch(() => {});
         }
 
-        // --- SKRYPT AUTOMATYCZNEGO PRZEWIJANIA ---
+        // --- SKRYPT AUTOMATYCZNEGO PRZEWIJANIA - NIETKNIĘTE ---
         function startAutoScroll() {
             const container = document.getElementById('modes-list');
             let scrollAmount = 0;
