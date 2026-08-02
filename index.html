@@ -30,7 +30,7 @@
             display: grid;
             /* 3 kolumny: lewa (stała), środkowa (elastyczna), prawa (stała) */
             grid-template-columns: 320px 1fr 320px;
-            /* 2 wiersze: góra (nagłówek), dół (miejsce na wszystkie 3 panele) */
+            /* 2 wiersze: góra (nagłówek), dół (sekcja na panele) */
             grid-template-rows: auto 1fr;
             height: 100vh; 
             box-sizing: border-box;
@@ -38,12 +38,12 @@
             gap: 20px;
         }
         
-        /* PANEL U GÓRY (ROZCIĄGNIĘTY OD LEWEJ DO PRAWEJ KRAWĘDZI PANELI) */
+        /* PANEL U GÓRY (GRUBSZA RAMKA) */
         .top-panel {
-            grid-column: 1 / -1; /* Rozciągnięcie na wszystkie 3 kolumny */
-            width: 100%;         /* Wypełnienie całej dostępnej szerokości */
+            grid-column: 1 / -1; 
+            width: 100%;         
             background: rgba(0, 0, 0, 0.6); 
-            padding: 15px 0;     /* Górny i dolny wewnętrzny odstęp */
+            padding: 30px 0;     /* ZWIĘKSZONO: Grubsza ramka w pionie */
             border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.4); 
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.2);
@@ -52,17 +52,18 @@
             box-sizing: border-box;
         }
 
+        /* STYL WIĘKSZEGO NAPISU GŁÓWNEGO */
         .top-panel h2 {
             margin: 0;
             color: #00aaff;
             text-transform: uppercase;
-            letter-spacing: 6px;
-            font-size: 28px;
+            letter-spacing: 8px; /* Lekko zwiększony rozstaw liter dla lepszego efektu */
+            font-size: 38px;     /* ZWIĘKSZONO: Większa czcionka dla nazwy serwera */
             text-align: center;
-            text-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
+            text-shadow: 0 0 15px rgba(0, 170, 255, 0.7); /* Mocniejsza poświata neonu */
         }
 
-        /* PANELE BOCZNE */
+        /* PANELE BOCZNE (WYŚRODKOWANE W PIONIE) */
         .side-panel { 
             background: rgba(0, 0, 0, 0.6); padding: 30px; border-radius: 20px; 
             border: 1px solid rgba(0, 170, 255, 0.3); 
@@ -73,18 +74,19 @@
             box-sizing: border-box;
             
             grid-row: 2;      
-            align-self: end;  /* Wyrównanie dolnej krawędzi */
+            align-self: center; 
         }
 
         .left-panel { grid-column: 1; }
         .right-panel { grid-column: 3; }
 
-        /* PANEL ŚRODKOWY (DOPASOWANY WYMIAR, WYRÓWNANY DO SPODU) */
+        /* PANEL ŚRODKOWY (OBNIŻONY DO DOLNEJ KRAWĘDZI PANELI BOCZNYCH) */
         .center-panel-rect {
             grid-column: 2;   
             grid-row: 2;      
             justify-self: center; 
-            align-self: end;  /* Trzyma dół panelu w jednej linii z bocznymi */
+            align-self: end;  
+            margin-bottom: calc((100vh - 100px - 400px) / 4); 
             
             background: rgba(0, 0, 0, 0.6); padding: 40px 60px; border-radius: 15px; 
             border: 1px solid rgba(0, 170, 255, 0.5); width: 500px; 
@@ -138,7 +140,7 @@
 
     <div class="main-layout">
         
-        <!-- PANEL GÓRNY ROZCIĄGNIĘTY DO ZEWNĘTRZNYCH KRAWĘDZI PANELI BOCZNYCH -->
+        <!-- POGRUBIONY PANEL GÓRNY -->
         <div class="top-panel">
             <h2 id="servername">Wczytywanie nazwy...</h2>
         </div>
@@ -180,7 +182,7 @@
             </div>
         </div>
         
-        <!-- PANEL ŚRODKOWY: NIŻSZY, Z WYRÓWNANĄ DOLNĄ KRAWĘDZIĄ -->
+        <!-- PANEL ŚRODKOWY -->
         <div class="center-panel-rect">
             <h1>MultiGamemode</h1>
             <div class="info-row">TRYB: <span id="gamemode">Wczytywanie...</span></div>
